@@ -1,12 +1,13 @@
 // Saml2js Tests
 // =============
 // The tests for this module.
+// jshint esnext: true
 
-var chai    = require('chai'),
-    expect  = chai.expect,
-    Saml2js = require('../index'),
-    fs      = require('fs'),
-    parser;
+const expect  = require('unexpected');
+const Saml2js = require('../index');
+const fs      = require('fs');
+
+var parser;
 
 beforeEach('pass SAML response to Saml2js', function(done) {
   fs.readFile(__dirname + '/sample.saml', function(err, data) {
@@ -19,15 +20,15 @@ beforeEach('pass SAML response to Saml2js', function(done) {
 describe('Saml2js', function() {
   describe('#parse()', function() {
     it('should have a value', function() {
-      expect(parser.parsedSaml).to.exist;
+      expect(parser.parsedSaml, 'to be defined');
     });
 
     it('should return an object', function() {
-      expect(parser.parsedSaml).to.be.an('object');
+      expect(parser.parsedSaml, 'to be an', 'object');
     });
 
-    it('should have at least 8 keys', function() {
-      expect(Object.keys(parser.parsedSaml)).to.have.length.of.at.least(8);
+    it('should have 8 keys', function() {
+      expect(Object.keys(parser.parsedSaml), 'to have length', 8);
     });
   });
 
@@ -36,7 +37,7 @@ describe('Saml2js', function() {
       fs.readFile(__dirname + '/base64.saml', {encoding: 'utf8'}, function(err, saml) {
         if (err) done(err);
         var base64parser = new Saml2js(saml);
-        expect(base64parser.toObject()).to.be.an('object');
+        expect(base64parser.toObject(), 'to be an', 'object');
         done();
       });
     });
@@ -45,7 +46,7 @@ describe('Saml2js', function() {
       fs.readFile(__dirname + '/base64.saml', {encoding: 'utf8'}, function(err, saml) {
         if (err) done(err);
         var base64parser = new Saml2js(saml);
-        expect(base64parser.get('transfer type')).to.equal('Completed eligibility application');
+        expect(base64parser.get('transfer type'), 'to be', 'Completed eligibility application');
         done();
       });
     });
@@ -53,39 +54,39 @@ describe('Saml2js', function() {
 
   describe('#toJSON()', function() {
     it('should return a string', function() {
-      expect(parser.toJSON()).to.be.a('string');
+      expect(parser.toJSON(), 'to be a', 'string');
     });
 
     it('should be valid JSON', function() {
-      expect(JSON.parse(parser.toJSON())).to.be.ok;
+      expect(JSON.parse(parser.toJSON()), 'to be ok');
     });
   });
 
   describe('#get()', function() {
     it('should get attributes by name', function() {
-      expect(parser.get('transfer type')).to.equal('Completed Application');
+      expect(parser.get('transfer type'), 'to be', 'Completed Application');
     });
 
     it('should get attributes case-insensitively', function() {
-      expect(parser.get('FfE ASSIgned Consumer Id')).to.be.a('string');
+      expect(parser.get('FfE ASSIgned Consumer Id'), 'to be a', 'string');
     });
 
     it('should return undefined if the key does not exist', function() {
-      expect(parser.get('some undefined key')).to.be.undefined;
+      expect(parser.get('some undefined key'), 'to be undefined');
     });
 
     it('should return null for empty SAML attributes', function() {
-      expect(parser.get('Exception Reason')).to.be.null;
+      expect(parser.get('Exception Reason'), 'to be null');
     });
   });
 
   describe('#toObject()', function() {
     it('should return an object', function() {
-      expect(parser.toObject()).to.be.an('object');
+      expect(parser.toObject(), 'to be an', 'object');
     });
 
-    it('should have at last 8 keys', function() {
-      expect(Object.keys(parser.toObject())).to.have.length.of.at.least(8);
+    it('should have 8 keys', function() {
+      expect(Object.keys(parser.toObject()), 'to have length', 8);
     });
   });
 });
