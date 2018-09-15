@@ -4,19 +4,20 @@
 // into a POJO (Plain Old JavaScript Object)
 
 // Require dependencies
-var xmldom    = require('xmldom'),
-    xpath     = require('xpath'),
-    _         = require('lodash'),
-    profile   = {};
+const xmldom = require('xmldom');
+const xpath  = require('xpath');
+const _      = require('lodash');
+
+var   profile = {};
 
 // Saml2js
 // -------
 // Constructor function. Saves a copy
-// of the raw SAML you pass to it and 
+// of the raw SAML you pass to it and
 // a copy that's parsed into a JS object.
 //
 // `response` [String] - A SAML response string
-function Saml2js (response) {
+function Saml2js(response) {
   this.rawSaml    = response;
   this.parsedSaml = this.parse(response);
 }
@@ -43,7 +44,7 @@ Saml2js.prototype.parse = function(saml) {
 // --------------
 // Returns parsed SAML as a JSON string.
 // (Basically just an alias to `JSON.stringify()`).
-Saml2js.prototype.toJSON = function() {
+Saml2js.prototype.toJSON = function toJSON() {
   return JSON.stringify(this.parsedSaml);
 };
 
@@ -60,13 +61,13 @@ Saml2js.prototype.toJSON = function() {
 //     //   <saml2:AttributeValue>John</saml2:AttributeValue>
 //     // </saml2:Attribute>
 //     console.log(parser.get('first name')); //=> John
-Saml2js.prototype.get = function(key) {
-  var value = this.parsedSaml[_.camelCase(key.toLowerCase())];
+Saml2js.prototype.get = function get(key) {
+  const value = this.parsedSaml[_.camelCase(key.toLowerCase())];
   if (_.isUndefined(value)) {
     return undefined;
-  } else {
-    return _.isEmpty(value) ? null : value;
   }
+
+  return _.isEmpty(value) ? null : value;
 };
 
 // Saml2js.toObject
@@ -75,7 +76,7 @@ Saml2js.prototype.get = function(key) {
 // This does not do any further processing, it
 // just returns the object's internal value
 // of `this.parsedSaml`.
-Saml2js.prototype.toObject = function() {
+Saml2js.prototype.toObject = function toObject() {
   return this.parsedSaml;
 };
 
