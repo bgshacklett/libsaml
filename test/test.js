@@ -27,8 +27,8 @@ describe('Saml2js', function() {
       expect(parser.parsedSaml, 'to be an', 'object');
     });
 
-    it('should have 8 keys', function() {
-      expect(Object.keys(parser.parsedSaml), 'to have length', 8);
+    it('should have 10 keys', function() {
+      expect(Object.keys(parser.parsedSaml), 'to have length', 10);
     });
   });
 
@@ -46,7 +46,7 @@ describe('Saml2js', function() {
       fs.readFile(__dirname + '/base64.saml', {encoding: 'utf8'}, function(err, saml) {
         if (err) done(err);
         var base64parser = new Saml2js(saml);
-        expect(base64parser.get('transfer type'), 'to be', 'Completed eligibility application');
+        expect(base64parser.get('transfer type')[0], 'to be', 'Completed Application');
         done();
       });
     });
@@ -64,19 +64,15 @@ describe('Saml2js', function() {
 
   describe('#get()', function() {
     it('should get attributes by name', function() {
-      expect(parser.get('transfer type'), 'to be', 'Completed Application');
+      expect(parser.get('transfer type')[0], 'to be', 'Completed Application');
     });
 
     it('should get attributes case-insensitively', function() {
-      expect(parser.get('FfE ASSIgned Consumer Id'), 'to be a', 'string');
+      expect(parser.get('FfE ASSIgned Consumer Id')[0], 'to be a', 'string');
     });
 
-    it('should return undefined if the key does not exist', function() {
-      expect(parser.get('some undefined key'), 'to be undefined');
-    });
-
-    it('should return null for empty SAML attributes', function() {
-      expect(parser.get('Exception Reason'), 'to be null');
+    it('should return an empty array if the key does not exist', function() {
+      expect(parser.get('some undefined key'), 'to be empty');
     });
   });
 
@@ -85,8 +81,8 @@ describe('Saml2js', function() {
       expect(parser.toObject(), 'to be an', 'object');
     });
 
-    it('should have 8 keys', function() {
-      expect(Object.keys(parser.toObject()), 'to have length', 8);
+    it('should have 10 keys', function() {
+      expect(Object.keys(parser.toObject()), 'to have length', 10);
     });
   });
 });

@@ -74,6 +74,12 @@ rw4I2hUysIQwnxZ5L0MaTpo8Q=</X509Certificate>
       <saml2:Attribute Name="Transfer Type" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname- format:unspecified">
         <saml2:AttributeValue>Completed Application</saml2:AttributeValue>
       </saml2:Attribute>
+      <saml2:Attribute Name="Multi" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified">
+        <saml2:AttributeValue>Foo</saml2:AttributeValue>
+      </saml2:Attribute>
+      <saml2:Attribute Name="Multi" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified">
+        <saml2:AttributeValue>Bar</saml2:AttributeValue>
+      </saml2:Attribute>
       <saml2:Attribute Name="Exception Reason" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified">
         <saml2:AttributeValue/>
       </saml2:Attribute>

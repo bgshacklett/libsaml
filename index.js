@@ -6,9 +6,6 @@
 // Require dependencies
 const xmldom = require('xmldom');
 const xpath  = require('xpath');
-const _      = require('lodash');
-
-var   profile = {};
 
 // Saml2js
 // -------
@@ -25,18 +22,26 @@ function Saml2js(response) {
 // Saml2js.parse
 // -------------
 // Private function.
-// Parses raw SAML assertion to JS object.
-Saml2js.prototype.parse = function(saml) {
-  var xml       = new Buffer(saml, 'base64').toString('ascii'),
-      doc       = new xmldom.DOMParser().parseFromString(xml);
+// Parses raw SAML assertion to an array of objects.
+Saml2js.prototype.parse = function parse(saml) {
+  const attributePath = '//*[local-name() = "AttributeStatement"]/*';
 
-  var attributes = xpath.select('//*[local-name() = "AttributeStatement"]/*', doc);
-  attributes.forEach(function(attribute){
-    var name = xpath.select('string(@Name)', attribute);    
-    profile[_.camelCase(name)] = xpath.select('string(*[local-name() = "AttributeValue"]/text())', attribute);
-  });
+  const xml = Buffer.from(saml, 'base64').toString('ascii');
+  const doc = new xmldom.DOMParser().parseFromString(xml);
 
-  return profile;
+  const attributes = xpath.select(attributePath, doc);
+
+  return attributes.reduce((x, y) => {
+    const namePath  = 'string(@Name)';
+    const valuePath = 'string(*[local-name() = "AttributeValue"]/text())';
+
+    return x.concat(
+      {
+        name:  xpath.select(namePath, y),
+        value: xpath.select(valuePath, y),
+      },
+    );
+  }, []);
 };
 
 
@@ -62,12 +67,9 @@ Saml2js.prototype.toJSON = function toJSON() {
 //     // </saml2:Attribute>
 //     console.log(parser.get('first name')); //=> John
 Saml2js.prototype.get = function get(key) {
-  const value = this.parsedSaml[_.camelCase(key.toLowerCase())];
-  if (_.isUndefined(value)) {
-    return undefined;
-  }
-
-  return _.isEmpty(value) ? null : value;
+  return this.parsedSaml.filter(element => element.name.toLowerCase()
+                                           === key.toLowerCase())
+                        .map(x => x.value);
 };
 
 // Saml2js.toObject
