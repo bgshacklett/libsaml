@@ -6,21 +6,18 @@ module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt);
   require('time-grunt')(grunt);
 
-	grunt.initConfig({
+  grunt.initConfig({
     watch: {
       options: {
         reload: true
       },
       dev: {
         files: ['index.js', 'Gruntfile.js'],
-        tasks: ['jshint:dev']
+        tasks: ['eslint']
       }
     },
-    jshint: {
-      options: {
-        reporter: require('jshint-stylish')
-      },
-      dev: ['**/*.js', '!node_modules/**/*.js']
+    eslint: {
+      target: ['**/*.js', '!node_modules/**/*.js']
     }
   });
 
