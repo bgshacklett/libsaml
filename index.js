@@ -53,7 +53,7 @@ Saml2js.prototype.toJSON = function toJSON() {
   return JSON.stringify(this.parsedSaml);
 };
 
-// Saml2js.get
+// Saml2js.getAttribute
 // -----------
 // Get the value of a SAML attribute by using its
 // original SAML attribute Name from the raw XML.
@@ -66,7 +66,7 @@ Saml2js.prototype.toJSON = function toJSON() {
 //     //   <saml2:AttributeValue>John</saml2:AttributeValue>
 //     // </saml2:Attribute>
 //     console.log(parser.get('first name')); //=> John
-Saml2js.prototype.get = function get(key) {
+Saml2js.prototype.getAttribute = function get(key) {
   return this.parsedSaml.filter(element => element.name.toLowerCase()
                                            === key.toLowerCase())
                         .map(x => x.value);

@@ -46,7 +46,7 @@ describe('Saml2js', function() {
       fs.readFile(__dirname + '/base64.saml', {encoding: 'utf8'}, function(err, saml) {
         if (err) done(err);
         var base64parser = new Saml2js(saml);
-        expect(base64parser.get('transfer type')[0], 'to be', 'Completed Application');
+        expect(base64parser.getAttribute('transfer type')[0], 'to be', 'Completed Application');
         done();
       });
     });
@@ -62,21 +62,21 @@ describe('Saml2js', function() {
     });
   });
 
-  describe('#get()', function() {
+  describe('#getAttribute()', function() {
     it('should get attributes by name', function() {
-      expect(parser.get('transfer type')[0], 'to be', 'Completed Application');
+      expect(parser.getAttribute('transfer type')[0], 'to be', 'Completed Application');
     });
 
     it('should get attributes case-insensitively', function() {
-      expect(parser.get('FfE ASSIgned Consumer Id')[0], 'to be a', 'string');
+      expect(parser.getAttribute('FfE ASSIgned Consumer Id')[0], 'to be a', 'string');
     });
 
     it('should return an empty string if the attribute is empty', function() {
-      expect(parser.get('Exception Reason')[0], 'to be empty');
+      expect(parser.getAttribute('Exception Reason')[0], 'to be empty');
     });
 
     it('should return an empty array if the key does not exist', function() {
-      expect(parser.get('some undefined key'), 'to be empty');
+      expect(parser.getAttribute('some undefined key'), 'to be empty');
     });
   });
 
