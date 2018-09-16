@@ -29,9 +29,9 @@ Saml2js.prototype.parse = function parse(saml) {
   const xml = Buffer.from(saml, 'base64').toString('ascii');
   const doc = new xmldom.DOMParser().parseFromString(xml);
 
-  const attributes = xpath.select(attributePath, doc);
+  const rawAttributes = xpath.select(attributePath, doc);
 
-  return attributes.reduce((x, y) => {
+  const attributes = rawAttributes.reduce((x, y) => {
     const namePath  = 'string(@Name)';
     const valuePath = 'string(*[local-name() = "AttributeValue"]/text())';
 
@@ -42,6 +42,8 @@ Saml2js.prototype.parse = function parse(saml) {
       },
     );
   }, []);
+
+  return { attributes };
 };
 
 
@@ -67,9 +69,11 @@ Saml2js.prototype.toJSON = function toJSON() {
 //     // </saml2:Attribute>
 //     console.log(parser.get('first name')[0]); //=> John
 Saml2js.prototype.getAttribute = function get(key) {
-  return this.parsedSaml.filter(element => element.name.toLowerCase()
-                                           === key.toLowerCase())
-                        .map(x => x.value);
+  const attributes = this.parsedSaml.attributes;
+
+  return attributes.filter(element => element.name.toLowerCase()
+                                      === key.toLowerCase())
+                   .map(x => x.value);
 };
 
 // Saml2js.toObject

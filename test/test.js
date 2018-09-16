@@ -27,8 +27,8 @@ describe('Saml2js', function() {
       expect(parser.parsedSaml, 'to be an', 'object');
     });
 
-    it('should have 10 keys', function() {
-      expect(Object.keys(parser.parsedSaml), 'to have length', 10);
+    it('should have 10 elements in attributes', function() {
+      expect(Object.keys(parser.parsedSaml.attributes), 'to have length', 10);
     });
   });
 
@@ -85,8 +85,8 @@ describe('Saml2js', function() {
       expect(parser.toObject(), 'to be an', 'object');
     });
 
-    it('should have 10 keys', function() {
-      expect(Object.keys(parser.toObject()), 'to have length', 10);
+    it('should have 10 elements in attributes', function() {
+      expect(Object.keys(parser.toObject().attributes), 'to have length', 10);
     });
   });
 });
