@@ -65,7 +65,7 @@ Saml2js.prototype.toJSON = function toJSON() {
 //     // <saml2:Attribute Name="First Name">
 //     //   <saml2:AttributeValue>John</saml2:AttributeValue>
 //     // </saml2:Attribute>
-//     console.log(parser.get('first name')); //=> John
+//     console.log(parser.get('first name')[0]); //=> John
 Saml2js.prototype.getAttribute = function get(key) {
   return this.parsedSaml.filter(element => element.name.toLowerCase()
                                            === key.toLowerCase())
