@@ -1,25 +1,25 @@
-# saml2js [![npm version](https://badge.fury.io/js/saml2js.svg)](http://badge.fury.io/js/saml2js) [![Build Status](https://travis-ci.org/Aplo/saml2js.svg?branch=master)](https://travis-ci.org/Aplo/saml2js)
+# saml2js [![Build Status](https://travis-ci.org/bgshacklett/saml2js.svg?branch=master)](https://travis-ci.org/bgshacklett/saml2js)
 
 > Parses SAML responses into JS objects you can read and manipulate.
 
 ## Install
 
 ```
-$ npm install saml2js --save
+$ yarn add https://github.com/bgshacklett/saml2js.git
 ```
 
-Saml2js supports Node.js 0.10+ and iojs.
-
-[![NPM](https://nodei.co/npm/saml2js.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/saml2js/)
+```
+$ npm install git+https://github.com/bgshacklett/saml2js.git --save
+```
 
 ## Usage
 
 Saml2js was designed for use in any Node.js environment whether that's a web app or a standalone script.
 
 ```js
-var express = require('express')
-    Saml2js = require('saml2js'),
-    app     = express();
+const express = require('express');
+const Saml2js = require('saml2js');
+const app     = express();
 
 app.post('/saml/callback/?', function(req, res, next){
   var parser = new Saml2js(res.body.SAMLResponse);
@@ -36,12 +36,13 @@ app.listen(3000);
 To instantiate a new SAML parser:
 
 ```js
-var Saml2js = require('saml2js');
+const Saml2js = require('saml2js');
 
-var parser = new Saml2js(SAMLResponse);
+const parser = new Saml2js(SAMLResponse);
 ```
 
-After passing your SAML response as a string to the constructor you now have access to the following methods.
+After passing your SAML response as a string to the constructor you now have
+access to the following methods.
 
 #### `toObject()`
 
@@ -51,33 +52,17 @@ Returns the parsed SAML as a JavaScript object.
 var parsedObject = parser.toObject();
 ```
 
-Note that if your SAML has attributes have a `Name` attribute that contains a string that is mixed case and contains spaces Saml2js will automatically camel case this name when it is added as a property on the resulting object.
-
-__Example:__
-
-Given the following SAML...
-
-```xml
-<saml2:Attribute Name="First Name">
-  <saml2:AttributeValue>John</saml2:AttributeValue>
-</saml2:Attribute>
-```
-
-The resulting JavaScript object returned from `Saml2js().toObject()` will look like this:
-
-```js
-{
-  firstName: 'John'
-}
-```
-
 #### `toJSON()`
 
-Returns parsed SAML as a JSON string. Once you've instantiated the module and passed it raw SAML you can get its value as a JSON string with `parser.toJSON()`.
+Returns parsed SAML as a JSON string. Once you've instantiated the module and
+passed it raw SAML you can get its value as a JSON string with
+`parser.toJSON()`.
 
-#### `get()`
+#### `getAttribute()`
 
-Returns the value of a SAML attribute by name. The name you pass to this function should be the same as what the attribute value in your SAML is. For example, given this SAML:
+Returns an array containing the value(s) of any SAML attribute(s) by name. The
+name you pass to this function should be the same as what the attribute value
+in your SAML is. For example, given this SAML:
 
 ```xml
 <saml2:Attribute Name="First Name">
@@ -88,43 +73,41 @@ Returns the value of a SAML attribute by name. The name you pass to this functio
 To get the value of `First Name` you would call it like this:
 
 ```js
-// assuming you've instantiated the library as `parser` with `new Saml2js(SAMLResponse)`...
+// assuming you've instantiated the library as `parser` with
+// `new Saml2js(SAMLResponse)`...
 var firstName = parser.get('first name');
-console.log(firstName); //=> 'John'
+console.log(firstName[0]); //=> 'John'
 ```
 
-You don't need to worry about case sensitivity. Internally the Lodash `.camelCase()` method is called on the string you pass so when it is compared against the parsed SAML it will automagically match the name of the key as its stored internally if it exists.
+You don't need to worry about case sensitivity. Internally the case of the
+string you pass is normalized so when it is compared against the parsed SAML
+it will automagically match the name of the key as its stored internally if it
+exists.
 
 #### `parse()`
 
-This is a private method. It is called internally when you pass your SAML to the constructor. You should never need to call this manually. See the source code if you want to know more about it.
+This is a private method. It is called internally when you pass your SAML to
+the constructor. You should never need to call this manually. See the source
+code if you want to know more about it.
 
 ## Testing
 
-Testing requires Mocha and Chai.
+Testing requires Mocha and Unexpected. Both will be installed with your
+preferred package manager.
 
 1. Clone the repository
-2. Run `npm install && npm install -g mocha`
-3. Finally, run `mocha`
+2. Run `yarn install` (or `npm install`)
+3. Finally, run `yarn test` or `npm test`
 
 ## Contributing
 
-When contributing, be sure to branch off of `develop` to get the latest changes. Contributions are welcome. Please try to write tests for your code so we can merge it in faster.
+When contributing, be sure to branch off of `develop` to get the latest
+changes. Contributions are welcome. Pull requests without corresponding tests
+will not be merged outside of exceptional circumstances.
 
 ## Credit
 
-*This is a fork of [saml2json](https://github.com/flesch/saml2json.git) by John Flesch. Thanks for your original work.*
-
-## License
-
-[The MIT License (MIT)](http://flesch.mit-license.org/)
-
-Modified work Copyright (c) 2015 Aplo LLC, https://aploquote.com
-Original work Copyright (c) 2013 John Flesch, http://fles.ch
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
+This is a fork of [saml2js](https://github.com/billpatrianakos/saml2js.git) by Bill
+Patrianakos, which is, in turn, a fork of
+[saml2json](https://github.com/flesch/saml2json.git) by John Flesch. Thanks
+for your original work!
