@@ -71,6 +71,10 @@ describe('Saml2js', function() {
       expect(parser.get('FfE ASSIgned Consumer Id')[0], 'to be a', 'string');
     });
 
+    it('should return an empty string if the attribute is empty', function() {
+      expect(parser.get('Exception Reason')[0], 'to be empty');
+    });
+
     it('should return an empty array if the key does not exist', function() {
       expect(parser.get('some undefined key'), 'to be empty');
     });
