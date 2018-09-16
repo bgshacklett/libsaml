@@ -1,11 +1,11 @@
 {
-  "name": "saml2js",
-  "version": "0.1.2",
+  "name": "libsaml",
+  "version": "1.0.0",
   "description": "Parse SAML2 attributes into a JavaScript object.",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Aplo/saml2js.git"
+    "url": "https://github.com/bgshacklett/libsaml.git"
   },
   "keywords": [
     "SAML",
@@ -13,17 +13,17 @@
     "parser",
     "authentication"
   ],
-  "author": "Bill Patrianakos <bill+opensource@aploquote.com>",
+  "author": "Brian Shacklett <brian@digital-traffic.net>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Aplo/saml2js/issues"
+    "url": "https://github.com/Aplo/bgshacklett/issues"
   },
   "dependencies": {
     "lodash": "^3.10.1",
     "xmldom": "^0.1.16",
     "xpath": "0.0.5"
   },
-  "homepage": "https://github.com/Aplo/saml2js",
+  "homepage": "https://github.com/bgshacklett/libsaml",
   "devDependencies": {
     "eslint": "^5.6.0",
     "eslint-config-airbnb-base": "^13.1.0",

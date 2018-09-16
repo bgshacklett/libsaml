@@ -1,4 +1,4 @@
-// Saml2js
+// LibSaml
 // =======
 // A library for parsing SAML attributes
 // into a POJO (Plain Old JavaScript Object)
@@ -7,23 +7,23 @@
 const xmldom = require('xmldom');
 const xpath  = require('xpath');
 
-// Saml2js
+// LibSaml
 // -------
 // Constructor function. Saves a copy
 // of the raw SAML you pass to it and
 // a copy that's parsed into a JS object.
 //
 // `response` [String] - A SAML response string
-function Saml2js(response) {
+function LibSaml(response) {
   this.rawSaml    = response;
   this.parsedSaml = this.parse(response);
 }
 
-// Saml2js.parse
+// LibSaml.parse
 // -------------
 // Private function.
 // Parses raw SAML assertion to an array of objects.
-Saml2js.prototype.parse = function parse(saml) {
+LibSaml.prototype.parse = function parse(saml) {
   const attributePath = '//*[local-name() = "AttributeStatement"]/*';
 
   const xml = Buffer.from(saml, 'base64').toString('ascii');
@@ -47,15 +47,15 @@ Saml2js.prototype.parse = function parse(saml) {
 };
 
 
-// Saml2js.toJSON
+// LibSaml.toJSON
 // --------------
 // Returns parsed SAML as a JSON string.
 // (Basically just an alias to `JSON.stringify()`).
-Saml2js.prototype.toJSON = function toJSON() {
+LibSaml.prototype.toJSON = function toJSON() {
   return JSON.stringify(this.parsedSaml);
 };
 
-// Saml2js.getAttribute
+// LibSaml.getAttribute
 // -----------
 // Get the value of a SAML attribute by using its
 // original SAML attribute Name from the raw XML.
@@ -68,7 +68,7 @@ Saml2js.prototype.toJSON = function toJSON() {
 //     //   <saml2:AttributeValue>John</saml2:AttributeValue>
 //     // </saml2:Attribute>
 //     console.log(parser.get('first name')[0]); //=> John
-Saml2js.prototype.getAttribute = function get(key) {
+LibSaml.prototype.getAttribute = function get(key) {
   const attributes = this.parsedSaml.attributes;
 
   return attributes.filter(element => element.name.toLowerCase()
@@ -76,14 +76,14 @@ Saml2js.prototype.getAttribute = function get(key) {
                    .map(x => x.value);
 };
 
-// Saml2js.toObject
+// LibSaml.toObject
 // ----------------
 // Returns the parsed SAML as a JS object.
 // This does not do any further processing, it
 // just returns the object's internal value
 // of `this.parsedSaml`.
-Saml2js.prototype.toObject = function toObject() {
+LibSaml.prototype.toObject = function toObject() {
   return this.parsedSaml;
 };
 
-module.exports = Saml2js;
+module.exports = LibSaml;
