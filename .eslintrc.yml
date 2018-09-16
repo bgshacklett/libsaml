@@ -2,6 +2,7 @@ extends: airbnb-base
 rules:
   linebreak-style: 0
   no-multi-spaces: 0
+  prefer-destructuring: 0
   indent:
     - error
     - 2
