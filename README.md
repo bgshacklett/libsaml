@@ -1,28 +1,28 @@
-# saml2js [![Build Status](https://travis-ci.org/bgshacklett/saml2js.svg?branch=master)](https://travis-ci.org/bgshacklett/saml2js)
+# libsaml [![Build Status](https://travis-ci.org/bgshacklett/saml2js.svg?branch=master)](https://travis-ci.org/bgshacklett/saml2js)
 
 > Parses SAML responses into JS objects you can read and manipulate.
 
 ## Install
 
 ```
-$ yarn add https://github.com/bgshacklett/saml2js.git
+$ yarn add https://github.com/bgshacklett/libsaml.git
 ```
 
 ```
-$ npm install git+https://github.com/bgshacklett/saml2js.git --save
+$ npm install git+https://github.com/bgshacklett/libsaml.git --save
 ```
 
 ## Usage
 
-Saml2js was designed for use in any Node.js environment whether that's a web app or a standalone script.
+LibSaml was designed for use in any Node.js environment whether that's a web app or a standalone script.
 
 ```js
 const express = require('express');
-const Saml2js = require('saml2js');
+const LibSaml = require('libsaml');
 const app     = express();
 
 app.post('/saml/callback/?', function(req, res, next){
-  var parser = new Saml2js(res.body.SAMLResponse);
+  var parser = new LibSaml(res.body.SAMLResponse);
   res.json(parser.toObject());
 });
 
@@ -36,9 +36,9 @@ app.listen(3000);
 To instantiate a new SAML parser:
 
 ```js
-const Saml2js = require('saml2js');
+const LibSaml = require('libsaml');
 
-const parser = new Saml2js(SAMLResponse);
+const parser = new LibSaml(SAMLResponse);
 ```
 
 After passing your SAML response as a string to the constructor you now have
@@ -74,7 +74,7 @@ To get the value of `First Name` you would call it like this:
 
 ```js
 // assuming you've instantiated the library as `parser` with
-// `new Saml2js(SAMLResponse)`...
+// `new LibSaml(SAMLResponse)`...
 var firstName = parser.get('first name');
 console.log(firstName[0]); //=> 'John'
 ```

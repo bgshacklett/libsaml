@@ -1,6 +1,6 @@
 /* global beforeEach describe it */
 
-// Saml2js Tests
+// LibSaml Tests
 // =============
 // The tests for this module.
 // jshint esnext: true
@@ -8,19 +8,19 @@
 const expect  = require('unexpected');
 const fs      = require('fs');
 const path    = require('path');
-const Saml2js = require('../index');
+const LibSaml = require('../index');
 
 let parser;
 
-beforeEach('pass SAML response to Saml2js', (done) => {
+beforeEach('pass SAML response to LibSaml', (done) => {
   fs.readFile(path.join(__dirname, 'sample.saml'), (err, data) => {
     if (err) throw err;
-    parser = new Saml2js(data);
+    parser = new LibSaml(data);
     done();
   });
 });
 
-describe('Saml2js', () => {
+describe('LibSaml', () => {
   describe('#parse()', () => {
     it('should have a value', () => {
       expect(parser.parsedSaml, 'to be defined');
@@ -39,7 +39,7 @@ describe('Saml2js', () => {
     it('should parse base64 encoded SAML', (done) => {
       fs.readFile(path.join(__dirname, 'base64.saml'), { encoding: 'utf8' }, (err, saml) => {
         if (err) done(err);
-        const base64parser = new Saml2js(saml);
+        const base64parser = new LibSaml(saml);
         expect(base64parser.toObject(), 'to be an', 'object');
         done();
       });
@@ -48,7 +48,7 @@ describe('Saml2js', () => {
     it('should contain the expected data', (done) => {
       fs.readFile(path.join(__dirname, 'base64.saml'), { encoding: 'utf8' }, (err, saml) => {
         if (err) done(err);
-        const base64parser = new Saml2js(saml);
+        const base64parser = new LibSaml(saml);
         expect(base64parser.getAttribute('transfer type')[0], 'to be', 'Completed Application');
         done();
       });
