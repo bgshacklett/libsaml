@@ -1,4 +1,4 @@
-/* global beforeEach describe it */
+/* global before describe it */
 
 // LibSaml Tests
 // =============
@@ -10,52 +10,86 @@ const fs      = require('fs');
 const path    = require('path');
 const LibSaml = require('../index');
 
-let parser;
-
-beforeEach('pass SAML response to LibSaml', (done) => {
-  fs.readFile(path.join(__dirname, 'sample.saml'), (err, data) => {
-    if (err) throw err;
-    parser = new LibSaml(data);
-    done();
-  });
-});
-
 describe('LibSaml', () => {
   describe('#parse()', () => {
-    it('should have a value', () => {
-      expect(parser.parsedSaml, 'to be defined');
-    });
+    describe('utf-8', () => {
+      let parser;
 
-    it('should return an object', () => {
-      expect(parser.parsedSaml, 'to be an', 'object');
-    });
+      before('pass SAML response to LibSaml', (done) => {
+        fs.readFile(path.join(__dirname, 'sample.saml'), (err, data) => {
+          if (err) throw err;
+          parser = new LibSaml(data);
+          done();
+        });
+      });
 
-    it('should have 10 elements in attributes', () => {
-      expect(Object.keys(parser.parsedSaml.attributes), 'to have length', 10);
-    });
-  });
+      it('should have a value', () => {
+        expect(parser.parsedSaml, 'to be defined');
+      });
 
-  describe('#parse()', () => {
-    it('should parse base64 encoded SAML', (done) => {
-      fs.readFile(path.join(__dirname, 'base64.saml'), { encoding: 'utf8' }, (err, saml) => {
-        if (err) done(err);
-        const base64parser = new LibSaml(saml);
-        expect(base64parser.toObject(), 'to be an', 'object');
-        done();
+      it('should return an object', () => {
+        expect(parser.parsedSaml, 'to be an', 'object');
+      });
+
+      it('should have 9 elements in attributes', () => {
+        expect(Object.keys(parser.parsedSaml.attributes), 'to have length', 9);
+      });
+
+      it('should retain multiple attribute values', () => {
+        expect(parser.parsedSaml.attributes[7].value, 'to have length', 2);
+      });
+
+      it('should contain the expected data', () => {
+        expect(parser.parsedSaml.attributes[7].value[1], 'to be', 'Bar');
       });
     });
 
-    it('should contain the expected data', (done) => {
-      fs.readFile(path.join(__dirname, 'base64.saml'), { encoding: 'utf8' }, (err, saml) => {
-        if (err) done(err);
-        const base64parser = new LibSaml(saml);
-        expect(base64parser.getAttribute('transfer type')[0], 'to be', 'Completed Application');
-        done();
+
+    describe('base64', () => {
+      let parser;
+
+      before('pass SAML response to LibSaml', (done) => {
+        fs.readFile(path.join(__dirname, 'base64.saml'), { encoding: 'utf8' }, (err, data) => {
+          if (err) done(err);
+          parser = new LibSaml(data);
+          done();
+        });
+      });
+
+      it('should have a value', () => {
+        expect(parser.parsedSaml, 'to be defined');
+      });
+
+      it('should return an object', () => {
+        expect(parser.parsedSaml, 'to be an', 'object');
+      });
+
+      it('should have 9 elements in attributes', () => {
+        expect(Object.keys(parser.parsedSaml.attributes), 'to have length', 9);
+      });
+
+      it('should retain multiple attribute values', () => {
+        expect(parser.parsedSaml.attributes[7].value, 'to have length', 2);
+      });
+
+      it('should contain the expected data', () => {
+        expect(parser.parsedSaml.attributes[7].value[1], 'to be', 'Bar');
       });
     });
   });
+
 
   describe('#toJSON()', () => {
+    let parser;
+
+    before('pass SAML response to LibSaml', (done) => {
+      fs.readFile(path.join(__dirname, 'sample.saml'), (err, data) => {
+        if (err) throw err;
+        parser = new LibSaml(data);
+        done();
+      });
+    });
+
     it('should return a string', () => {
       expect(parser.toJSON(), 'to be a', 'string');
     });
@@ -66,6 +100,16 @@ describe('LibSaml', () => {
   });
 
   describe('#getAttribute()', () => {
+    let parser;
+
+    before('pass SAML response to LibSaml', (done) => {
+      fs.readFile(path.join(__dirname, 'sample.saml'), (err, data) => {
+        if (err) throw err;
+        parser = new LibSaml(data);
+        done();
+      });
+    });
+
     it('should get attributes by name', () => {
       expect(parser.getAttribute('transfer type')[0], 'to be', 'Completed Application');
     });
@@ -75,6 +119,7 @@ describe('LibSaml', () => {
     });
 
     it('should return an empty string if the attribute is empty', () => {
+      expect(parser.getAttribute('Exception Reason')[0], 'to be a', 'string');
       expect(parser.getAttribute('Exception Reason')[0], 'to be empty');
     });
 
@@ -84,12 +129,22 @@ describe('LibSaml', () => {
   });
 
   describe('#toObject()', () => {
+    let parser;
+
+    before('pass SAML response to LibSaml', (done) => {
+      fs.readFile(path.join(__dirname, 'sample.saml'), (err, data) => {
+        if (err) throw err;
+        parser = new LibSaml(data);
+        done();
+      });
+    });
+
     it('should return an object', () => {
       expect(parser.toObject(), 'to be an', 'object');
     });
 
-    it('should have 10 elements in attributes', () => {
-      expect(Object.keys(parser.toObject().attributes), 'to have length', 10);
+    it('should have 9 elements in attributes', () => {
+      expect(Object.keys(parser.toObject().attributes), 'to have length', 9);
     });
   });
 });
