@@ -24,24 +24,25 @@ function LibSaml(response) {
 // Private function.
 // Parses raw SAML assertion to an array of objects.
 LibSaml.prototype.parse = function parse(saml) {
-  const attributePath = '//*[local-name() = "AttributeStatement"]/*';
+  const saml2Namespace = 'urn:oasis:names:tc:SAML:2.0:assertion';
+  const xpAttribute    = '//saml2:Attribute';
+  const xpName         = 'string(@Name)';
+  const xpVal          = 'saml2:AttributeValue';
 
   const xml = Buffer.from(saml, 'base64').toString('ascii');
   const doc = new xmldom.DOMParser().parseFromString(xml);
 
-  const rawAttributes = xpath.select(attributePath, doc);
+  const select = xpath.useNamespaces({ saml2: saml2Namespace });
 
-  const attributes = rawAttributes.reduce((x, y) => {
-    const namePath  = 'string(@Name)';
-    const valuePath = 'string(*[local-name() = "AttributeValue"]/text())';
-
-    return x.concat(
+  const attributes = select(xpAttribute, doc).reduce(
+    (acc, attr) => acc.concat(
       {
-        name:  xpath.select(namePath, y),
-        value: xpath.select(valuePath, y),
+        name:  select(xpName, attr),
+        value: select(xpVal, attr).reduce((a, b) => [].concat(a, b.textContent), []),
       },
-    );
-  }, []);
+    ),
+    [],
+  );
 
   return { attributes };
 };
@@ -70,10 +71,10 @@ LibSaml.prototype.toJSON = function toJSON() {
 //     console.log(parser.get('first name')[0]); //=> John
 LibSaml.prototype.getAttribute = function get(key) {
   const attributes = this.parsedSaml.attributes;
+  const predicate  = element => element.name.toLowerCase()
+                                === key.toLowerCase();
 
-  return attributes.filter(element => element.name.toLowerCase()
-                                      === key.toLowerCase())
-                   .map(x => x.value);
+  return [].concat(...attributes.filter(predicate).map(x => x.value));
 };
 
 // LibSaml.toObject
