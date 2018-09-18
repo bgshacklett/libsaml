@@ -1,4 +1,4 @@
-# libsaml [![Build Status](https://travis-ci.org/bgshacklett/saml2js.svg?branch=master)](https://travis-ci.org/bgshacklett/saml2js)
+# libsaml [![Build Status](https://travis-ci.org/bgshacklett/libsaml.svg?branch=master)](https://travis-ci.org/bgshacklett/libsaml)
 
 > Parses SAML responses into JS objects you can read and manipulate.
 
