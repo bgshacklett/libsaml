@@ -21,7 +21,7 @@
   "dependencies": {
     "lodash": "^4.17.5",
     "xmldom": "^0.1.16",
-    "xpath": "0.0.5"
+    "xpath": "^0.0.27"
   },
   "homepage": "https://github.com/bgshacklett/libsaml",
   "devDependencies": {
