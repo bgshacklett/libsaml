@@ -101,8 +101,7 @@ preferred package manager.
 
 ## Contributing
 
-When contributing, be sure to branch off of `develop` to get the latest
-changes. Contributions are welcome. Pull requests without corresponding tests
+Contributions are welcome. Pull requests without corresponding tests
 will not be merged outside of exceptional circumstances.
 
 ## Credit
