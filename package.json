@@ -21,7 +21,8 @@
   "dependencies": {
     "lodash": "^4.17.5",
     "xmldom": "^0.1.16",
-    "xpath": "^0.0.27"
+    "xpath": "^0.0.27",
+    "snyk": "^1.190.0"
   },
   "homepage": "https://github.com/bgshacklett/libsaml",
   "devDependencies": {
@@ -39,6 +40,9 @@
   },
   "scripts": {
     "test": "mocha",
-    "inspect": "mocha --inspect-brk"
-  }
+    "inspect": "mocha --inspect-brk",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
+  },
+  "snyk": true
 }
