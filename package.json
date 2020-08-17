@@ -19,7 +19,7 @@
     "url": "https://github.com/Aplo/bgshacklett/issues"
   },
   "dependencies": {
-    "lodash": "^4.17.5",
+    "lodash": "^4.17.20",
     "xmldom": "^0.1.16",
     "xpath": "^0.0.27"
   },
